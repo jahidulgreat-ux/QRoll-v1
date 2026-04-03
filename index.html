@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#0A10B8">
+  <title>QRoll — Smart School Attendance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- TOAST CONTAINER -->
+  <div id="toast-container"></div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN 01: ONBOARDING
+  ════════════════════════════════════════ -->
+  <div id="screen-onboarding" class="screen active">
+    <div class="ob-slides-wrap" id="ob-slides-wrap">
+      <!-- Slide 1 -->
+      <div class="ob-slide">
+        <div class="ob-hero">
+          <div class="ob-icon-ring">
+            <img src="https://i.ibb.co/dw0DPfQw/20260401-171030.png" alt="QRoll" class="ob-app-icon">
+          </div>
+          <div class="ob-deco-circle oc1"></div>
+          <div class="ob-deco-circle oc2"></div>
+        </div>
+        <div class="ob-text">
+          <h1>Smart QR Attendance</h1>
+          <p>Each student gets a unique QR code. Scan to mark attendance instantly — no paperwork needed.</p>
+        </div>
+      </div>
+      <!-- Slide 2 -->
+      <div class="ob-slide">
+        <div class="ob-hero ob-hero-blue">
+          <div class="ob-icon-ring ob-ring-blue">
+            <i data-lucide="bar-chart-2" class="ob-feat-icon"></i>
+          </div>
+          <div class="ob-deco-circle oc1"></div>
+          <div class="ob-deco-circle oc2"></div>
+        </div>
+        <div class="ob-text">
+          <h1>Track Every Absence</h1>
+          <p>Live dashboard, attendance graphs, and daily, weekly, monthly reports at your fingertips.</p>
+        </div>
+      </div>
+      <!-- Slide 3 -->
+      <div class="ob-slide">
+        <div class="ob-hero ob-hero-orange">
+          <div class="ob-icon-ring ob-ring-orange">
+            <i data-lucide="message-square" class="ob-feat-icon"></i>
+          </div>
+          <div class="ob-deco-circle oc1"></div>
+          <div class="ob-deco-circle oc2"></div>
+        </div>
+        <div class="ob-text">
+          <h1>Auto Parent Alerts</h1>
+          <p>When a student is absent, parents are notified automatically via SMS. No manual calls.</p>
+        </div>
+      </div>
+    </div>
+    <div class="ob-bottom">
+      <div class="ob-dots" id="ob-dots">
+        <span class="ob-dot active"></span>
+        <span class="ob-dot"></span>
+        <span class="ob-dot"></span>
+      </div>
+      <button class="btn-orange ob-btn" id="ob-next-btn">Next</button>
+      <button class="ghost-link ob-skip" id="ob-skip-btn">Skip</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN 02 & 03: AUTH (Signup / Login)
+  ════════════════════════════════════════ -->
+  <div id="screen-auth" class="screen">
+    <div class="auth-hero-band">
+      <div class="auth-hero-deco"><div class="ah-circle c1"></div><div class="ah-circle c2"></div></div>
+      <div class="auth-brand-center">
+        <img src="https://i.ibb.co/dw0DPfQw/20260401-171030.png" alt="QRoll" class="auth-brand-icon">
+        <div class="auth-brand-name"><span class="bq">QR</span><span class="boll">oll</span></div>
+      </div>
+      <p class="auth-hero-sub" id="auth-hero-sub">Create your teacher account</p>
+    </div>
+    <div class="auth-card">
+      <!-- SIGNUP -->
+      <div id="signup-wrap">
+        <h2 class="auth-card-title">Create Account</h2>
+        <p class="auth-card-sub">Start tracking attendance smarter</p>
+        <div class="fg"><span class="fi"><i data-lucide="user"></i></span><input id="su-name" type="text" placeholder="Your full name" class="fi-input"></div>
+        <div class="fg"><span class="fi"><i data-lucide="mail"></i></span><input id="su-email" type="email" placeholder="Email address" class="fi-input"></div>
+        <div class="fg"><span class="fi"><i data-lucide="lock"></i></span><input id="su-pass" type="password" placeholder="Create password" class="fi-input"><button class="eye-btn" onclick="togglePwd('su-pass',this)"><i data-lucide="eye"></i></button></div>
+        <button class="btn-navy fw" onclick="doSignup()">Create Account</button>
+        <div class="or-divider"><span>or</span></div>
+        <button class="btn-google fw" onclick="doGoogle()"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>Continue with Google</button>
+        <p class="auth-footer-text">Already have an account? <a onclick="toLogin()">Sign In</a></p>
+      </div>
+      <!-- LOGIN -->
+      <div id="login-wrap" style="display:none">
+        <h2 class="auth-card-title">Sign In</h2>
+        <p class="auth-card-sub">Access your classroom dashboard</p>
+        <div class="fg"><span class="fi"><i data-lucide="mail"></i></span><input id="li-email" type="email" placeholder="Email address" class="fi-input"></div>
+        <div class="fg"><span class="fi"><i data-lucide="lock"></i></span><input id="li-pass" type="password" placeholder="Password" class="fi-input"><button class="eye-btn" onclick="togglePwd('li-pass',this)"><i data-lucide="eye"></i></button></div>
+        <a class="forgot-link" onclick="doForgot()">Forgot password?</a>
+        <button class="btn-navy fw" onclick="doLogin()">Sign In</button>
+        <div class="or-divider"><span>or</span></div>
+        <button class="btn-google fw" onclick="doGoogle()"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>Continue with Google</button>
+        <p class="auth-footer-text">New to QRoll? <a onclick="toSignup()">Create account</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN 04: SCHOOL SETUP
+  ════════════════════════════════════════ -->
+  <div id="screen-setup" class="screen">
+    <div class="plain-header">
+      <button class="icon-btn" onclick="showScreen('screen-auth')"><i data-lucide="chevron-left"></i></button>
+      <div class="setup-progress"><div class="setup-progress-bar" id="setup-bar"></div></div>
+      <div style="width:44px"></div>
+    </div>
+    <div class="setup-step-label">Set up your classroom</div>
+    <div class="scroll-content">
+      <h1 class="setup-h1">Tell us about your school</h1>
+      <p class="setup-sub">This info helps personalize your QRoll dashboard.</p>
+      <div class="fg"><span class="fi"><i data-lucide="building-2"></i></span><input id="setup-school" type="text" placeholder="e.g. St. Mary's High School" class="fi-input"></div>
+      <div class="fg"><span class="fi top-fi"><i data-lucide="map-pin"></i></span><textarea id="setup-addr" placeholder="Full school address" class="fi-input fi-ta"></textarea></div>
+      <div class="fg"><span class="fi"><i data-lucide="graduation-cap"></i></span><input id="setup-principal" type="text" placeholder="Principal's full name" class="fi-input"></div>
+      <div class="fg sel-fg" onclick="openPicker('setup-class','setup-class-label','class-picker')">
+        <span class="fi"><i data-lucide="layers"></i></span>
+        <div class="fi-input sel-display" id="setup-class-label">Select your class</div>
+        <i data-lucide="chevron-down" class="sel-arrow"></i>
+        <input type="hidden" id="setup-class">
+      </div>
+      <div class="fg"><span class="fi"><i data-lucide="bookmark"></i></span><input id="setup-section" type="text" placeholder="e.g. A, B, C (optional)" class="fi-input"><p class="fg-hint">Leave blank if your school has no sections.</p></div>
+      <div class="info-banner"><i data-lucide="info" class="ib-icon"></i><p>You can update these details anytime from Profile settings.</p></div>
+    </div>
+    <div class="sticky-bottom">
+      <button class="btn-navy fw" onclick="saveSetup()">Complete Setup</button>
+      <p class="sticky-caption">Your classroom is private. Only you can access it.</p>
+    </div>
+    <!-- Class picker bottom sheet -->
+    <div id="class-picker" class="bs-overlay" onclick="closePicker('class-picker')">
+      <div class="bs" onclick="event.stopPropagation()">
+        <div class="bs-handle"></div>
+        <div class="bs-title">Select Class</div>
+        <div id="class-picker-opts" class="bs-opts"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN 05: MAIN APP
+  ════════════════════════════════════════ -->
+  <div id="screen-main" class="screen">
+    <!-- TOP APP BAR -->
+    <div class="top-bar">
+      <div class="top-bar-brand">
+        <img src="https://i.ibb.co/dw0DPfQw/20260401-171030.png" alt="QRoll" class="top-bar-logo">
+        <div class="top-bar-name"><span class="bq">QR</span><span class="boll">oll</span></div>
+      </div>
+      <button class="qr-btn" onclick="openScanner()"><i data-lucide="qr-code"></i></button>
+    </div>
+
+    <!-- TAB PANELS -->
+    <div class="tab-panels">
+
+      <!-- ── DASHBOARD ── -->
+      <div id="tab-dashboard" class="tab-panel active-panel">
+        <!-- Hero Card -->
+        <div class="hero-card">
+          <div class="hc-deco"><div class="hd1"></div><div class="hd2"></div></div>
+          <div class="hc-top-row">
+            <span class="hc-greeting" id="dash-greeting">Good Morning</span>
+            <span class="hc-date" id="dash-date"></span>
+          </div>
+          <div class="hc-teacher-name" id="dash-name">Teacher</div>
+          <div class="hc-sub" id="dash-sub">Loading...</div>
+          <div class="hc-divider"></div>
+          <div class="hc-mini-stats">
+            <div class="ms-item"><span class="ms-num" id="ms-total">0</span><span class="ms-lbl">Total</span></div>
+            <div class="ms-sep"></div>
+            <div class="ms-item"><span class="ms-num ms-green" id="ms-present">0</span><span class="ms-lbl">Present</span></div>
+            <div class="ms-sep"></div>
+            <div class="ms-item"><span class="ms-num ms-red" id="ms-absent">0</span><span class="ms-lbl">Absent</span></div>
+          </div>
+        </div>
+
+        <!-- Quick Scan -->
+        <div class="section-row"><span class="sec-label">Today's Attendance</span></div>
+        <button class="scan-cta pulse-anim" onclick="openScanner()">
+          <i data-lucide="qr-code" class="scan-cta-icon"></i>
+          <span>Scan to Mark Attendance</span>
+          <i data-lucide="chevron-right" class="scan-cta-arr"></i>
+        </button>
+
+        <!-- Donut Chart -->
+        <div class="card donut-card">
+          <div class="card-row-title"><span class="card-title">Today's Attendance</span><button class="ghost-btn" onclick="switchTab('students')">View All</button></div>
+          <div class="donut-wrap">
+            <canvas id="donut-chart" width="160" height="160"></canvas>
+            <div class="donut-center"><span class="donut-pct" id="donut-pct">0%</span><span class="donut-sub-lbl">Present</span></div>
+          </div>
+          <div class="donut-legend">
+            <div class="dl-item"><span class="dl-dot green-bg"></span><span class="dl-lbl">Present</span><span class="dl-val" id="dl-present">0</span></div>
+            <div class="dl-item"><span class="dl-dot red-bg"></span><span class="dl-lbl">Absent</span><span class="dl-val" id="dl-absent">0</span></div>
+            <div class="dl-item"><span class="dl-dot amber-bg"></span><span class="dl-lbl">Late</span><span class="dl-val" id="dl-late">0</span></div>
+          </div>
+        </div>
+
+        <!-- Stat Cards -->
+        <div class="stat-grid">
+          <div class="stat-card"><div class="sc-stripe navy-bg"></div><div class="sc-body"><div class="sc-num" id="sc-week">--%</div><div class="sc-desc">This Week</div><div class="sc-trend green-text" id="sc-week-trend"><i data-lucide="trending-up" class="trend-icon"></i> --</div></div></div>
+          <div class="stat-card"><div class="sc-stripe orange-bg"></div><div class="sc-body"><div class="sc-num red-text" id="sc-absent">0</div><div class="sc-desc">Absent Today</div><div class="sc-trend small-text" id="sc-sms"></div></div></div>
+          <div class="stat-card"><div class="sc-stripe blue-bg"></div><div class="sc-body"><div class="sc-num" id="sc-days">0</div><div class="sc-desc">School Days</div></div></div>
+          <div class="stat-card"><div class="sc-stripe green-bg"></div><div class="sc-body"><div class="sc-num" id="sc-mavg">--%</div><div class="sc-desc">Monthly Avg</div><div class="sc-trend small-text" id="sc-month"></div></div></div>
+        </div>
+
+        <!-- Recent Absentees -->
+        <div class="section-row"><span class="sec-label">Recent Absentees</span><button class="ghost-btn" onclick="switchTab('students')">See All</button></div>
+        <div class="absentees-row" id="dash-absentees"><div class="no-absentees">All present today!</div></div>
+        <div class="bottom-spacer"></div>
+      </div>
+
+      <!-- ── STUDENTS ── -->
+      <div id="tab-students" class="tab-panel">
+        <div class="tab-title-row">
+          <span class="tab-title">Students</span>
+          <button class="btn-orange-sm" onclick="openAddStudent()"><i data-lucide="user-plus"></i> Add Student</button>
+        </div>
+        <div class="search-wrap">
+          <div class="search-box">
+            <i data-lucide="search" class="search-ico"></i>
+            <input id="stu-search" type="text" placeholder="Search by name or roll number" oninput="filterStudents(this.value)">
+            <button id="search-clear" class="search-clear-btn" onclick="clearSearch()" style="display:none"><i data-lucide="x"></i></button>
+          </div>
+        </div>
+        <div class="filter-chips-row" id="filter-chips">
+          <button class="chip chip-active" data-filter="all" onclick="setFilter('all',this)">All (0)</button>
+          <button class="chip" data-filter="present" onclick="setFilter('present',this)">Present (0)</button>
+          <button class="chip" data-filter="absent" onclick="setFilter('absent',this)">Absent (0)</button>
+          <button class="chip" data-filter="late" onclick="setFilter('late',this)">Late (0)</button>
+        </div>
+        <div id="students-list" class="students-list">
+          <div class="empty-state" id="stu-empty">
+            <div class="empty-ilu"><div class="ei-bg-qr"></div><div class="ei-person-shape"></div></div>
+            <h3>No students yet</h3>
+            <p>Add your first student to start tracking attendance.</p>
+            <button class="btn-orange" onclick="openAddStudent()">Add First Student</button>
+          </div>
+        </div>
+        <button class="fab" onclick="openAddStudent()"><i data-lucide="user-plus"></i></button>
+        <div class="bottom-spacer"></div>
+      </div>
+
+      <!-- ── REPORTS ── -->
+      <div id="tab-reports" class="tab-panel">
+        <div class="tab-title-row"><span class="tab-title">Reports</span></div>
+        <div class="rep-tabs">
+          <button class="rep-tab rep-tab-active" onclick="switchRepTab('daily',this)">Daily</button>
+          <button class="rep-tab" onclick="switchRepTab('weekly',this)">Weekly</button>
+          <button class="rep-tab" onclick="switchRepTab('monthly',this)">Monthly</button>
+        </div>
+
+        <!-- Daily -->
+        <div id="rep-daily" class="rep-content">
+          <div class="date-nav">
+            <button class="date-nav-btn" onclick="reportDateNav(-1)"><i data-lucide="chevron-left"></i></button>
+            <div class="date-pills" id="date-pills"></div>
+            <button class="date-nav-btn" onclick="reportDateNav(1)"><i data-lucide="chevron-right"></i></button>
+          </div>
+          <div class="hero-card rep-hero" id="rep-daily-hero">
+            <div class="hc-mini-stats">
+              <div class="ms-item"><span class="ms-num" id="r-total">0</span><span class="ms-lbl">Total</span></div>
+              <div class="ms-sep"></div>
+              <div class="ms-item"><span class="ms-num ms-green" id="r-present">0</span><span class="ms-lbl">Present</span></div>
+              <div class="ms-sep"></div>
+              <div class="ms-item"><span class="ms-num ms-red" id="r-absent">0</span><span class="ms-lbl">Absent</span></div>
+              <div class="ms-sep"></div>
+              <div class="ms-item"><span class="ms-num ms-amber" id="r-late">0</span><span class="ms-lbl">Late</span></div>
+            </div>
+            <div class="rep-rate" id="r-rate">Attendance Rate: --%</div>
+          </div>
+          <div class="section-row"><span class="sec-label">Attendance Details</span></div>
+          <div class="att-table">
+            <div class="att-thead"><span class="atc roll-col">Roll</span><span class="atc name-col">Name</span><span class="atc stat-col">Status</span><span class="atc time-col">Time</span></div>
+            <div id="rep-daily-rows"></div>
+          </div>
+          <button class="btn-orange fw rep-gen-btn" onclick="generateReport('daily')"><i data-lucide="file-down"></i> Generate Daily Report</button>
+          <p class="rep-fmt-hint">PDF + CSV formats available</p>
+        </div>
+
+        <!-- Weekly -->
+        <div id="rep-weekly" class="rep-content" style="display:none">
+          <div class="card" style="margin:12px 16px 0">
+            <div class="fg" style="margin:0"><span class="fi"><i data-lucide="calendar-range"></i></span><select id="week-select" class="fi-input" onchange="loadWeekly()"></select></div>
+          </div>
+          <div class="card" style="margin:12px 16px 0">
+            <div class="card-title">Weekly Attendance</div>
+            <canvas id="weekly-chart" height="160"></canvas>
+          </div>
+          <div class="weekly-stats" id="weekly-stats"></div>
+          <button class="btn-orange fw rep-gen-btn" onclick="generateReport('weekly')"><i data-lucide="file-down"></i> Generate Weekly Report</button>
+        </div>
+
+        <!-- Monthly -->
+        <div id="rep-monthly" class="rep-content" style="display:none">
+          <div class="month-pills-scroll"><div class="month-pills" id="month-pills"></div></div>
+          <div class="card" style="margin:12px 16px 0">
+            <div class="card-title">Monthly Heatmap</div>
+            <div id="monthly-heatmap" class="monthly-heatmap-grid"></div>
+          </div>
+          <div class="section-row" style="margin-top:16px"><span class="sec-label">Students Needing Attention</span></div>
+          <div id="attention-list"></div>
+          <button class="btn-orange fw rep-gen-btn" onclick="generateReport('monthly')"><i data-lucide="file-down"></i> Generate Monthly Report</button>
+        </div>
+        <div class="bottom-spacer"></div>
+      </div>
+
+      <!-- ── PROFILE ── -->
+      <div id="tab-profile" class="tab-panel">
+        <div class="profile-hero">
+          <div class="hc-deco"><div class="hd1"></div><div class="hd2"></div></div>
+          <div class="profile-avatar-lg" id="prof-avatar">T</div>
+          <div class="prof-name" id="prof-name">Teacher</div>
+          <div class="prof-role" id="prof-role">Class Teacher</div>
+          <div class="prof-school" id="prof-school"><i data-lucide="building-2" style="width:12px;height:12px;margin-right:4px"></i><span id="prof-school-name">School</span></div>
+        </div>
+        <div class="prof-edit-wrap"><button class="btn-secondary" onclick="openEditProfile()">Edit Profile</button></div>
+        <div class="section-row" style="margin-top:8px"><span class="sec-label-sm">CLASS INFORMATION</span></div>
+        <div class="info-card" id="prof-info-card"></div>
+        <div class="section-row" style="margin-top:16px"><span class="sec-label-sm">SETTINGS</span></div>
+        <div class="info-card">
+          <div class="info-row clickable" onclick="openEditProfile()"><i data-lucide="user-pen" class="ir-icon"></i><div class="ir-text">Edit Profile</div><i data-lucide="chevron-right" class="ir-arr"></i></div>
+          <div class="info-row clickable" onclick="openEditProfile()"><i data-lucide="building-2" class="ir-icon"></i><div class="ir-text">School Details</div><i data-lucide="chevron-right" class="ir-arr"></i></div>
+          <div class="info-row"><i data-lucide="bell" class="ir-icon"></i><div class="ir-text">Notifications</div><label class="toggle"><input type="checkbox" id="notif-toggle" checked><span class="toggle-track"></span></label></div>
+          <div class="info-row"><i data-lucide="message-square" class="ir-icon"></i><div class="ir-text">SMS Alert Settings</div><span class="active-badge">Active</span><i data-lucide="chevron-right" class="ir-arr"></i></div>
+          <div class="info-row clickable" onclick="doChangePassword()"><i data-lucide="lock" class="ir-icon"></i><div class="ir-text">Change Password</div><i data-lucide="chevron-right" class="ir-arr"></i></div>
+        </div>
+        <div class="section-row" style="margin-top:16px"><span class="sec-label-sm">SUPPORT</span></div>
+        <div class="info-card">
+          <div class="info-row"><i data-lucide="help-circle" class="ir-icon"></i><div class="ir-text">Help & Support</div><i data-lucide="chevron-right" class="ir-arr"></i></div>
+          <div class="info-row"><i data-lucide="info" class="ir-icon"></i><div class="ir-text">About QRoll</div><i data-lucide="chevron-right" class="ir-arr"></i></div>
+          <div class="info-row"><i data-lucide="shield" class="ir-icon"></i><div class="ir-text">Privacy Policy</div><i data-lucide="chevron-right" class="ir-arr"></i></div>
+        </div>
+        <button class="btn-danger fw" style="margin:24px 16px;width:calc(100% - 32px)" onclick="doSignOut()"><i data-lucide="log-out"></i> Sign Out</button>
+        <div class="bottom-spacer"></div>
+      </div>
+
+    </div><!-- /tab-panels -->
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+      <button class="nav-tab active-nav" data-tab="dashboard" onclick="switchTab('dashboard')">
+        <div class="nav-pip"></div>
+        <i data-lucide="layout-dashboard" class="nav-ico"></i>
+        <span class="nav-lbl">Dashboard</span>
+      </button>
+      <button class="nav-tab" data-tab="students" onclick="switchTab('students')">
+        <div class="nav-pip"></div>
+        <i data-lucide="users" class="nav-ico"></i>
+        <span class="nav-lbl">Students</span>
+      </button>
+      <button class="nav-tab" data-tab="reports" onclick="switchTab('reports')">
+        <div class="nav-pip"></div>
+        <i data-lucide="file-bar-chart" class="nav-ico"></i>
+        <span class="nav-lbl">Reports</span>
+      </button>
+      <button class="nav-tab" data-tab="profile" onclick="switchTab('profile')">
+        <div class="nav-pip"></div>
+        <i data-lucide="user-circle" class="nav-ico"></i>
+        <span class="nav-lbl">Profile</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       OVERLAY: QR SCANNER
+  ════════════════════════════════════════ -->
+  <div id="screen-scanner" class="screen qr-scanner-screen" style="display:none">
+    <video id="qr-video" class="qr-video" autoplay playsinline muted></video>
+    <div class="qr-overlay-ui">
+      <div class="qr-top-bar">
+        <button class="icon-btn ghost-icon-btn" onclick="closeScanner()"><i data-lucide="arrow-left"></i></button>
+        <span class="qr-top-title">Scan Student QR</span>
+        <button class="icon-btn ghost-icon-btn" id="flash-btn" onclick="toggleFlash()"><i data-lucide="zap"></i></button>
+      </div>
+      <div class="qr-frame-area">
+        <div class="dark-veil dv-top"></div>
+        <div class="qr-middle">
+          <div class="dark-veil dv-side"></div>
+          <div class="qr-box">
+            <div class="qr-corner-bracket tl-br"></div>
+            <div class="qr-corner-bracket tr-br"></div>
+            <div class="qr-corner-bracket bl-br"></div>
+            <div class="qr-corner-bracket br-br"></div>
+            <div class="qr-sweep-line" id="sweep-line"></div>
+          </div>
+          <div class="dark-veil dv-side"></div>
+        </div>
+        <div class="dark-veil dv-bot">
+          <div class="qr-frame-hint">Align QR code within the frame</div>
+        </div>
+      </div>
+    </div>
+    <div class="qr-bottom-panel" id="qr-panel">
+      <!-- Ready -->
+      <div id="qr-state-ready">
+        <div class="qr-ready-title">Ready to Scan</div>
+        <div class="qr-pulse-dots"><span></span><span></span><span></span></div>
+      </div>
+      <!-- Scanning -->
+      <div id="qr-state-scanning" style="display:none">
+        <div class="qr-scanning-lbl">Identifying student...</div>
+        <div class="spin-ring"></div>
+      </div>
+      <!-- Found -->
+      <div id="qr-state-found" style="display:none">
+        <div class="qr-found-row">
+          <div class="qr-found-avatar" id="qr-found-avatar">A</div>
+          <div class="qr-found-info">
+            <div class="qr-found-name" id="qr-found-name">Name</div>
+            <div class="qr-found-roll" id="qr-found-roll">Roll: 01</div>
+            <div class="qr-found-status-row"><span class="badge badge-present" id="qr-found-badge">PRESENT</span><span class="qr-found-time" id="qr-found-time"></span></div>
+          </div>
+        </div>
+        <button class="btn-navy fw" onclick="markFromQR('present')">Mark as Present</button>
+        <div class="qr-ghost-actions">
+          <button class="ghost-btn amber-text" onclick="markFromQR('late')">Mark Late</button>
+          <button class="ghost-btn red-text" onclick="markFromQR('absent')">Mark Absent</button>
+          <button class="ghost-btn" onclick="resetQRPanel()">Cancel</button>
+        </div>
+      </div>
+      <!-- Already Marked -->
+      <div id="qr-state-already" style="display:none">
+        <div class="qr-already-row"><i data-lucide="alert-circle" class="alert-ico orange-text"></i><div><div class="qr-already-title">Already marked today</div><div class="qr-already-detail" id="qr-already-detail"></div></div></div>
+        <button class="btn-navy fw" onclick="resetQRPanel()">Scan Another</button>
+      </div>
+      <!-- Unknown -->
+      <div id="qr-state-unknown" style="display:none">
+        <div class="qr-already-row"><i data-lucide="alert-triangle" class="alert-ico red-text"></i><div><div class="qr-already-title">QR code not recognized</div><div class="qr-already-detail">Make sure student QR is from QRoll</div></div></div>
+        <button class="btn-navy fw" onclick="resetQRPanel()">Try Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       OVERLAY: ATTENDANCE CONFIRMED
+  ════════════════════════════════════════ -->
+  <div id="screen-att-conf" class="screen att-conf-screen" style="display:none" onclick="closeAttConf()">
+    <div class="att-conf-deco"><div class="acd1"></div><div class="acd2"></div></div>
+    <div class="att-conf-center">
+      <div class="att-check-ring">
+        <div class="pulse-ring pr1"></div>
+        <div class="pulse-ring pr2"></div>
+        <i data-lucide="check" class="att-check-ico"></i>
+      </div>
+      <div class="att-conf-name" id="att-conf-name">Student Name</div>
+      <div class="att-conf-status" id="att-conf-status">PRESENT</div>
+      <div class="att-conf-time" id="att-conf-time">Marked at 09:14 AM</div>
+    </div>
+    <div class="att-conf-bottom">
+      <div class="att-prog-wrap"><div class="att-prog-fill" id="att-prog"></div></div>
+      <div class="att-tap-hint">Tap to scan next student</div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       MODAL: ADD STUDENT
+  ════════════════════════════════════════ -->
+  <div id="modal-add-stu" class="screen modal-screen" style="display:none">
+    <div class="modal-hdr">
+      <button class="icon-btn" onclick="closeAddStudent()"><i data-lucide="x"></i></button>
+      <span class="modal-title">Add Student</span>
+      <button class="btn-navy-sm" onclick="saveStudent()">Save</button>
+    </div>
+    <div class="modal-hint">Fill in student details to generate their QR code</div>
+    <div class="modal-scroll">
+      <div class="form-sec-label">BASIC INFORMATION</div>
+      <div class="fg"><span class="fi"><i data-lucide="user"></i></span><input id="add-name" type="text" placeholder="Full name as per records" class="fi-input"></div>
+      <div class="fg"><span class="fi"><i data-lucide="hash"></i></span><input id="add-roll" type="text" placeholder="e.g. 07" class="fi-input mono-input"></div>
+      <div class="fg"><span class="fi"><i data-lucide="calendar"></i></span><input id="add-dob" type="date" class="fi-input"></div>
+      <div class="form-sec-label mt-16">PARENT / GUARDIAN</div>
+      <div class="fg"><span class="fi"><i data-lucide="user-round"></i></span><input id="add-father" type="text" placeholder="Father's name" class="fi-input"></div>
+      <div class="fg"><span class="fi"><i data-lucide="user-round"></i></span><input id="add-mother" type="text" placeholder="Mother's name (optional)" class="fi-input"></div>
+      <div class="fg"><span class="fi"><i data-lucide="phone"></i></span><input id="add-phone" type="tel" placeholder="+91 9XXXXXXXXX" class="fi-input"></div>
+      <div class="sms-notice"><i data-lucide="info" class="sms-ni"></i><p>This number will receive automatic SMS alerts when the student is absent.</p></div>
+      <div class="form-sec-label mt-16">ADDRESS</div>
+      <div class="fg"><span class="fi top-fi"><i data-lucide="map-pin"></i></span><textarea id="add-addr" placeholder="House no., street, locality, city, state" class="fi-input fi-ta"></textarea></div>
+      <button class="btn-orange fw mt-20" onclick="saveStudent()"><i data-lucide="qr-code"></i> Save Student & Generate QR</button>
+      <p class="center-caption">A unique QR code will be generated automatically.</p>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: STUDENT DETAIL
+  ════════════════════════════════════════ -->
+  <div id="screen-stu-detail" class="screen slide-in-screen" style="display:none">
+    <div class="plain-header">
+      <button class="icon-btn" onclick="closeStudentDetail()"><i data-lucide="chevron-left"></i></button>
+      <span class="ph-title" id="det-header-name">Student</span>
+      <button class="icon-btn" onclick="openStudentMore()"><i data-lucide="more-vertical"></i></button>
+    </div>
+    <!-- Hero -->
+    <div class="stu-det-hero">
+      <div class="stu-det-avatar" id="det-avatar">A</div>
+      <div class="stu-det-name" id="det-name">Name</div>
+      <div class="stu-det-meta" id="det-meta">Roll: 01 · Class</div>
+      <div class="stu-det-parent" id="det-parent">Father: --</div>
+      <div class="stu-det-phone" id="det-phone"><i data-lucide="phone" style="width:12px;height:12px;margin-right:4px"></i>--</div>
+    </div>
+    <div class="view-qr-wrap"><button class="view-qr-pill" onclick="openStudentQR()"><i data-lucide="qr-code" class="pill-icon"></i> View QR Code</button></div>
+    <!-- Stats -->
+    <div class="stat-grid">
+      <div class="stat-card"><div class="sc-stripe green-bg"></div><div class="sc-body"><div class="sc-num green-text" id="det-present">0</div><div class="sc-desc">Days Present</div></div></div>
+      <div class="stat-card"><div class="sc-stripe red-bg"></div><div class="sc-body"><div class="sc-num red-text" id="det-absent">0</div><div class="sc-desc">Days Absent</div></div></div>
+      <div class="stat-card"><div class="sc-stripe navy-bg"></div><div class="sc-body"><div class="sc-num" id="det-pct">0%</div><div class="sc-desc">This Month</div></div></div>
+      <div class="stat-card"><div class="sc-stripe amber-bg"></div><div class="sc-body"><div class="sc-num amber-text" id="det-late">0</div><div class="sc-desc">Late Arrivals</div></div></div>
+    </div>
+    <!-- Bar Chart -->
+    <div class="card" style="margin:0 16px"><div class="card-title">This Month's Attendance</div><canvas id="stu-bar-chart" height="160"></canvas></div>
+    <!-- Calendar Heatmap -->
+    <div class="card" style="margin:12px 16px"><div class="card-title">Attendance Calendar</div><div id="stu-heatmap" class="monthly-heatmap-grid small-hm"></div></div>
+    <!-- Log -->
+    <div class="section-row" style="margin-top:16px"><span class="sec-label">Attendance Log</span><button class="ghost-btn" onclick="exportStudentLog()">Export</button></div>
+    <div id="stu-att-log" class="att-log-list"></div>
+    <div style="height:40px"></div>
+    <!-- More Sheet -->
+    <div id="stu-more-sheet" class="bs-overlay" onclick="closeStudentMore()" style="display:none">
+      <div class="bs" onclick="event.stopPropagation()">
+        <div class="bs-handle"></div>
+        <div class="bs-action-item" onclick="editCurrentStudent()"><i data-lucide="user-pen"></i> Edit Student</div>
+        <div class="bs-action-item" onclick="openStudentQR()"><i data-lucide="qr-code"></i> View QR Code</div>
+        <div class="bs-action-item" onclick="sendManualSMS()"><i data-lucide="message-square"></i> Send Manual SMS</div>
+        <div class="bs-action-item danger-act" onclick="deleteCurrentStudent()"><i data-lucide="trash-2"></i> Delete Student</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: STUDENT QR CODE
+  ════════════════════════════════════════ -->
+  <div id="screen-stu-qr" class="screen slide-in-screen" style="display:none">
+    <div class="plain-header">
+      <button class="icon-btn" onclick="closeStudentQR()"><i data-lucide="chevron-left"></i></button>
+      <span class="ph-title">Student QR Code</span>
+      <button class="icon-btn" onclick="shareQR()"><i data-lucide="share-2"></i></button>
+    </div>
+    <div class="qr-display-wrap">
+      <div class="qr-disp-name" id="qr-disp-name">Name</div>
+      <div class="qr-disp-roll" id="qr-disp-roll">Roll: 01</div>
+      <div class="qr-disp-class" id="qr-disp-class">Class</div>
+      <div class="qr-code-card">
+        <div id="qr-render"></div>
+        <div class="qr-card-footer">
+          <span id="qr-card-school" class="qr-card-school">School</span>
+          <div class="qr-card-brand"><img src="https://i.ibb.co/dw0DPfQw/20260401-171030.png" style="width:14px;height:14px"><span>QRoll</span></div>
+        </div>
+      </div>
+      <p class="qr-disp-hint">Show this QR code to your class teacher for instant attendance scanning.</p>
+    </div>
+    <div class="sticky-bottom">
+      <button class="btn-orange fw" id="qr-dl-btn" onclick="downloadQR()"><i data-lucide="download"></i> Download QR Code</button>
+      <button class="btn-secondary fw mt-12" onclick="shareQR()"><i data-lucide="share-2"></i> Share</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       MODAL: REPORT PREVIEW
+  ════════════════════════════════════════ -->
+  <div id="modal-rep-preview" class="screen modal-screen" style="display:none">
+    <div class="modal-hdr">
+      <button class="icon-btn" onclick="closeRepPreview()"><i data-lucide="x"></i></button>
+      <span class="modal-title" id="rep-prev-title">Report</span>
+      <button class="icon-btn" onclick="shareWhatsApp()"><i data-lucide="share-2"></i></button>
+    </div>
+    <div class="rep-preview-scroll">
+      <div id="rep-preview-card" class="rep-preview-card"></div>
+    </div>
+    <div class="rep-dl-sheet">
+      <button class="btn-orange fw" id="pdf-btn" onclick="downloadPDF()"><i data-lucide="file-text"></i> Download as PDF</button>
+      <button class="btn-secondary fw mt-12" onclick="downloadCSV()"><i data-lucide="file-spreadsheet"></i> Download as CSV</button>
+      <button class="btn-whatsapp fw mt-12" onclick="shareWhatsApp()"><i data-lucide="message-circle"></i> Share on WhatsApp</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       MODAL: EDIT PROFILE
+  ════════════════════════════════════════ -->
+  <div id="modal-edit-profile" class="screen modal-screen" style="display:none">
+    <div class="modal-hdr">
+      <button class="icon-btn" onclick="closeEditProfile()"><i data-lucide="x"></i></button>
+      <span class="modal-title">Edit Profile</span>
+      <button class="btn-navy-sm" onclick="saveProfile()">Save</button>
+    </div>
+    <div class="modal-scroll">
+      <div class="fg"><span class="fi"><i data-lucide="user"></i></span><input id="ep-name" type="text" placeholder="Your full name" class="fi-input"></div>
+      <div class="form-sec-label mt-16">SCHOOL DETAILS</div>
+      <div class="fg"><span class="fi"><i data-lucide="building-2"></i></span><input id="ep-school" type="text" placeholder="School name" class="fi-input"></div>
+      <div class="fg"><span class="fi top-fi"><i data-lucide="map-pin"></i></span><textarea id="ep-addr" placeholder="School address" class="fi-input fi-ta"></textarea></div>
+      <div class="fg"><span class="fi"><i data-lucide="graduation-cap"></i></span><input id="ep-principal" type="text" placeholder="Principal name" class="fi-input"></div>
+      <div class="fg sel-fg" onclick="openPicker('ep-class','ep-class-label','ep-class-picker')">
+        <span class="fi"><i data-lucide="layers"></i></span>
+        <div class="fi-input sel-display" id="ep-class-label">Select class</div>
+        <i data-lucide="chevron-down" class="sel-arrow"></i>
+        <input type="hidden" id="ep-class">
+      </div>
+      <div class="fg"><span class="fi"><i data-lucide="bookmark"></i></span><input id="ep-section" type="text" placeholder="Section (optional)" class="fi-input"></div>
+      <button class="btn-orange fw mt-20" onclick="saveProfile()">Save Changes</button>
+    </div>
+    <div id="ep-class-picker" class="bs-overlay" onclick="closePicker('ep-class-picker')" style="display:none">
+      <div class="bs" onclick="event.stopPropagation()">
+        <div class="bs-handle"></div>
+        <div class="bs-title">Select Class</div>
+        <div id="ep-class-picker-opts" class="bs-opts"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       MODAL: EDIT STUDENT
+  ════════════════════════════════════════ -->
+  <div id="modal-edit-stu" class="screen modal-screen" style="display:none">
+    <div class="modal-hdr">
+      <button class="icon-btn" onclick="closeEditStudent()"><i data-lucide="x"></i></button>
+      <span class="modal-title">Edit Student</span>
+      <button class="btn-navy-sm" onclick="updateStudent()">Save</button>
+    </div>
+    <div class="modal-scroll">
+      <div class="form-sec-label">BASIC INFORMATION</div>
+      <div class="fg"><span class="fi"><i data-lucide="user"></i></span><input id="es-name" type="text" placeholder="Full name" class="fi-input"></div>
+      <div class="fg"><span class="fi"><i data-lucide="hash"></i></span><input id="es-roll" type="text" placeholder="Roll number" class="fi-input mono-input"></div>
+      <div class="fg"><span class="fi"><i data-lucide="calendar"></i></span><input id="es-dob" type="date" class="fi-input"></div>
+      <div class="form-sec-label mt-16">PARENT / GUARDIAN</div>
+      <div class="fg"><span class="fi"><i data-lucide="user-round"></i></span><input id="es-father" type="text" placeholder="Father's name" class="fi-input"></div>
+      <div class="fg"><span class="fi"><i data-lucide="user-round"></i></span><input id="es-mother" type="text" placeholder="Mother's name" class="fi-input"></div>
+      <div class="fg"><span class="fi"><i data-lucide="phone"></i></span><input id="es-phone" type="tel" placeholder="+91 9XXXXXXXXX" class="fi-input"></div>
+      <div class="form-sec-label mt-16">ADDRESS</div>
+      <div class="fg"><span class="fi top-fi"><i data-lucide="map-pin"></i></span><textarea id="es-addr" placeholder="Address" class="fi-input fi-ta"></textarea></div>
+      <button class="btn-orange fw mt-20" onclick="updateStudent()">Update Student</button>
+    </div>
+  </div>
+
+</div><!-- /#app -->
+
+<!-- ═══════ SCRIPTS ═══════ -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
